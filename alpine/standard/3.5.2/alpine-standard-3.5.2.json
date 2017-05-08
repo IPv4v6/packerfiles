@@ -1,0 +1,66 @@
+{
+  "builders":
+  [
+	{
+	  "type": "qemu",
+	  "accelerator": "kvm",
+	  "vm_name": "alpine",
+	  "iso_url": "http://dl-cdn.alpinelinux.org/alpine/v3.5/releases/x86_64/alpine-standard-3.5.2-x86_64.iso",
+	  "iso_target_path": "./alpine-standard-3.5.2-x86_64.iso",
+	  "iso_checksum": "c955c26431c877527024d94d1ba6495b87fddac186df16c404f7b15ea61f443b",
+	  "iso_checksum_type": "sha256",
+	  "output_directory": "builddir",
+	  "http_directory": ".",
+	  "disk_size": 8192,
+	  "disk_interface": "virtio",
+	  "disk_cache": "none",
+	  "format": "raw",
+	  "net_device": "virtio-net",
+	  "headless": "true",
+	  "ssh_username": "vagrant",
+	  "ssh_password": "vagrant",
+	  "ssh_port": 22,
+	  "ssh_wait_timeout": "30m",
+	  "shutdown_command": "echo 'vagrant' | sudo -S poweroff",
+	  "boot_command": [
+		"root<enter>",
+		"setup-alpine<enter>",
+		"us<enter>",
+		"us<enter>",
+		"alpine<enter>",
+		"<enter><wait>",
+		"<enter><wait>",
+		"<enter><wait>",
+		"secret123<enter>",
+		"secret123<enter>",
+		"UTC<enter><wait>",
+		"none<enter><wait>",
+		"1<enter><wait10>",
+		"none<enter><wait>",
+		"vda<enter><wait>",
+		"sys<enter><wait>",
+		"y<enter><wait>",
+		"<wait10m>",
+		"reboot<enter>",
+		"<wait1m>",
+		"root<enter>",
+		"secret123<enter>",
+		"adduser -D -u 9999 vagrant<enter>",
+		"echo vagrant:vagrant | chpasswd<enter>",
+		"apk add sudo<enter>",
+		"echo \"vagrant ALL=(ALL) ALL\" > /etc/sudoers.d/vagrant<enter>",
+		"apk add openssh<enter>",
+		"rc-update add sshd<enter>",
+		"service sshd start<enter>"
+	  ]
+	}
+  ],
+  "provisioners":
+  [
+    {
+	  "type": "shell",
+	  "script": "conf.sh",
+	  "execute_command": "echo 'vagrant' | sudo -S sh '{{.Path}}'"
+    }
+  ]
+}
