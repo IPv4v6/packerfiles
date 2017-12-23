@@ -1,0 +1,42 @@
+{
+  "builders":
+  [
+	{
+	  "type": "qemu",
+	  "accelerator": "kvm",
+	  "vm_name": "kali",
+	  "iso_url": "https://archive.kali.org/kali-images/kali-2017.3/kali-linux-light-2017.3-amd64.iso",
+	  "iso_target_path": "./kali-linux-light-2017.3-amd64.iso",
+	  "iso_checksum": "9822a4416d9a872b8455e829b6dcc23569b2739f838d19f5a00a623c50a6d185",
+	  "iso_checksum_type": "sha256",
+	  "output_directory": "builddir",
+	  "http_directory": ".",
+	  "disk_size": 20480,
+	  "disk_interface": "virtio",
+	  "disk_cache": "none",
+	  "format": "raw",
+	  "net_device": "virtio-net",
+	  "headless": "true",
+	  "ssh_username": "vagrant",
+	  "ssh_password": "vagrant",
+	  "ssh_port": 22,
+	  "ssh_wait_timeout": "30m",
+	  "shutdown_command": "echo 'vagrant' | sudo -S poweroff",
+	  "boot_command": [
+		"<esc><wait>",
+		"install ",
+		"url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg ",
+		"locale=en_US keymap=us hostname=kali domain=example.com",
+		"<enter>"
+	  ]
+	}
+  ],
+  "provisioners":
+  [
+    {
+	  "type": "shell",
+	  "script": "conf.sh",
+	  "execute_command": "echo 'vagrant' | sudo -S sh '{{.Path}}'"
+    }
+  ]
+}
