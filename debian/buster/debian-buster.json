@@ -1,0 +1,41 @@
+{
+  "builders":
+  [
+	{
+	  "type": "qemu",
+	  "accelerator": "kvm",
+	  "vm_name": "debian-buster",
+	  "iso_url": "http://cdimage.debian.org/cdimage/release/10.2.0/amd64/iso-cd/debian-10.2.0-amd64-netinst.iso",
+	  "iso_checksum": "e43fef979352df15056ac512ad96a07b515cb8789bf0bfd86f99ed0404f885f5",
+	  "iso_checksum_type": "sha256",
+	  "output_directory": "builddir",
+	  "http_directory": ".",
+	  "memory": 768,
+	  "disk_size": 8192,
+	  "disk_interface": "virtio",
+	  "disk_cache": "none",
+	  "format": "raw",
+	  "net_device": "virtio-net",
+	  "headless": "true",
+	  "ssh_username": "vagrant",
+	  "ssh_password": "vagrant",
+	  "ssh_port": 22,
+	  "ssh_wait_timeout": "30m",
+	  "shutdown_command": "echo 'vagrant' | sudo -S poweroff",
+	  "boot_command": [
+		"<esc><wait>",
+		"auto ",
+		"preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg",
+		"<enter>"
+	  ]
+	}
+  ],
+  "provisioners":
+  [
+    {
+	  "type": "shell",
+	  "script": "conf.sh",
+	  "execute_command": "echo 'vagrant' | sudo -S sh '{{.Path}}'"
+    }
+  ]
+}
