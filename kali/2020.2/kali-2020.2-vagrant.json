@@ -1,0 +1,51 @@
+{
+  "builders":
+  [
+	{
+	  "type": "qemu",
+	  "accelerator": "kvm",
+	  "vm_name": "kali",
+	  "iso_url": "https://archive.kali.org/kali-images/kali-2020.2/kali-linux-2020.2-installer-netinst-amd64.iso",
+	  "iso_target_path": "./kali-linux-2020.2-installer-netinst-amd64.iso",
+	  "iso_checksum": "def160159e12ff52fb5f4991240bd760500d7cd5ee38601a8bf35809a20f9450",
+	  "iso_checksum_type": "sha256",
+	  "output_directory": "builddir",
+	  "http_directory": ".",
+	  "memory": 768,
+	  "disk_size": 20480,
+	  "disk_interface": "virtio",
+	  "disk_cache": "none",
+	  "format": "qcow2",
+	  "net_device": "virtio-net",
+	  "headless": "true",
+	  "ssh_username": "vagrant",
+	  "ssh_password": "vagrant",
+	  "ssh_port": 22,
+	  "ssh_wait_timeout": "30m",
+	  "shutdown_command": "sudo -S poweroff",
+	  "boot_command": [
+		"<esc><wait>",
+		"install ",
+		"url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed-vagrant.cfg ",
+		"locale=en_US keymap=us hostname=kali domain=example.com ",
+		"net.ifnames=0",
+		"<enter>"
+	  ]
+	}
+  ],
+  "provisioners":
+  [
+    {
+	  "type": "shell",
+	  "script": "conf.sh",
+	  "execute_command": "sudo -S sh '{{.Path}}'"
+    }
+  ],
+  "post-processors":
+  [
+    {
+	  "type": "vagrant",
+	  "output": "kali-2020.2-vagrant-libvirt.box"
+    }
+  ]
+}
