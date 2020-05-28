@@ -6,6 +6,7 @@
 	  "accelerator": "kvm",
 	  "vm_name": "debian-buster",
 	  "iso_url": "http://cdimage.debian.org/cdimage/release/10.4.0/amd64/iso-cd/debian-10.4.0-amd64-netinst.iso",
+	  "iso_target_path": "./debian-10.4.0-amd64-netinst.iso",
 	  "iso_checksum": "ab3763d553330e90869487a6843c88f1d4aa199333ff16b653e60e59ac1fc60b",
 	  "iso_checksum_type": "sha256",
 	  "output_directory": "builddir",
