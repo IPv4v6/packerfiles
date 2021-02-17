@@ -1,7 +1,7 @@
 The MIT License
 ===============
 
-Copyright (c) 2017-2020 Stefan Pietsch
+Copyright (c) 2017-2021 Stefan Pietsch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
