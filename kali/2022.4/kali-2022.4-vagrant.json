@@ -1,0 +1,51 @@
+{
+  "builders":
+  [
+	{
+	  "type": "qemu",
+	  "accelerator": "kvm",
+	  "vm_name": "kali",
+	  "iso_url": "https://archive.kali.org/kali-images/kali-2022.4/kali-linux-2022.4-installer-netinst-amd64.iso",
+	  "iso_target_path": "./kali-linux-2022.4-installer-netinst-amd64.iso",
+	  "iso_checksum": "sha256:54cf16e191c0b61334e9f6c1ce633c922398e13136d4b99723c64286b171646a",
+	  "output_directory": "builddir",
+	  "http_directory": ".",
+	  "memory": 1024,
+	  "disk_size": 20480,
+	  "disk_interface": "virtio",
+	  "disk_cache": "none",
+	  "format": "qcow2",
+	  "net_device": "virtio-net",
+	  "headless": "true",
+	  "ssh_username": "vagrant",
+	  "ssh_password": "vagrant",
+	  "ssh_port": 22,
+	  "ssh_wait_timeout": "30m",
+	  "shutdown_command": "sudo -S poweroff",
+	  "boot_command": [
+		"<esc><wait>",
+		"install ",
+		"url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed-vagrant.cfg ",
+		"locale=en_US keymap=us hostname=kali domain=example.com ",
+		"netcfg/get_hostname=install netcfg/get_domainname=install ",
+		"net.ifnames=0",
+		"<enter>"
+	  ]
+	}
+  ],
+  "provisioners":
+  [
+    {
+	  "type": "shell",
+	  "script": "conf.sh",
+	  "execute_command": "sudo -S sh '{{.Path}}'"
+    }
+  ],
+  "post-processors":
+  [
+    {
+	  "type": "vagrant",
+	  "output": "kali-2022.4-vagrant-libvirt.box"
+    }
+  ]
+}
