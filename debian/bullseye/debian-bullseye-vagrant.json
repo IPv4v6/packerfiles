@@ -1,0 +1,49 @@
+{
+  "builders":
+  [
+	{
+	  "type": "qemu",
+	  "accelerator": "kvm",
+	  "vm_name": "debian-bullseye",
+	  "iso_url": "https://cdimage.debian.org/cdimage/archive/11.9.0/amd64/iso-cd/debian-11.9.0-amd64-netinst.iso",
+	  "iso_target_path": "./debian-11.9.0-amd64-netinst.iso",
+	  "iso_checksum": "sha256:01c540225250d42cda3809d7130d0c27e934c8aca260d01a86d33dee19623b0f",
+	  "output_directory": "builddir",
+	  "http_directory": ".",
+	  "memory": 1024,
+	  "disk_size": 20480,
+	  "disk_interface": "virtio",
+	  "disk_cache": "none",
+	  "format": "qcow2",
+	  "net_device": "virtio-net",
+	  "headless": "true",
+	  "ssh_username": "vagrant",
+	  "ssh_password": "vagrant",
+	  "ssh_port": 22,
+	  "ssh_wait_timeout": "30m",
+	  "shutdown_command": "sudo -S poweroff",
+	  "boot_command": [
+		"<esc><wait>",
+		"auto ",
+		"preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed-vagrant.cfg ",
+		"net.ifnames=0",
+		"<enter>"
+	  ]
+	}
+  ],
+  "provisioners":
+  [
+    {
+	  "type": "shell",
+	  "script": "conf.sh",
+	  "execute_command": "sudo -S sh '{{.Path}}'"
+    }
+  ],
+  "post-processors":
+  [
+    {
+	  "type": "vagrant",
+	  "output": "debian-bullseye-vagrant-libvirt.box"
+    }
+  ]
+}
